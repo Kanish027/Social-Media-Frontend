@@ -1,0 +1,112 @@
+/* Media query for mobile screen */
+@media only screen and (max-width: 768px) {
+  .feed {
+    margin-left: 0 !important;
+  }
+}
+/* Hide scrollbar for all elements in WebKit-based browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for all elements in Firefox */
+* {
+  scrollbar-width: none;
+}
+
+
+.navbar-toggler {
+  border: none !important;
+}
+
+.navbar-toggler:focus {
+  text-decoration: none;
+  outline: 0;
+  box-shadow: none !important;
+}
+
+.feedHeader {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background-color: rgba(251, 251, 253, 0.8) !important;
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap");
+
+@media only screen and (max-width: 768px) {
+  .logo {
+    width: 100px !important;
+    margin: 20px;
+  }
+  .sub-container {
+    height: auto !important;
+  }
+}
+
+@media only screen and (min-width: 1028px) {
+  .sub-container {
+    height: 100vh !important;
+  }
+}
+
+input:focus {
+  background-color: #fff !important;
+}
+
+.logo-text {
+  font-size: 3rem;
+  font-family: "Grand Hotel", cursive;
+}
+
+.sidebar-link:hover {
+  .links {
+    background-color: rgb(227, 227, 227);
+    border-radius: 20px;
+  }
+}
+
+.lower-sec {
+  padding: 10px 10px;
+}
+
+.lower-sec:hover {
+  background-color: rgb(227, 227, 227);
+}
+
+.btn {
+  --bs-btn-border-color: none;
+}
+
+/* .dialog-box {
+  min-width: 500px;
+  height: 100vh;
+  padding: 2vmax;
+} */
+
+.dropdown-toggle::after {
+  content: none !important;
+}
+.profile-name {
+  width: 118px; /* Adjust the width according to your needs */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+::-webkit-scrollbar {
+  display: none !important;
+}
+/* input[type="file"] {
+  display: none;
+} */
+
+.post-btn {
+  cursor: pointer !important;
+}
+
+textarea:focus {
+  /* border: 1.5px solid #0071e3 !important; */
+  box-shadow: none !important;
+  outline: none !important;
+}
