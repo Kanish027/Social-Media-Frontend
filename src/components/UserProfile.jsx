@@ -40,7 +40,7 @@ const UserProfile = () => {
         user.followers.some((follower) => follower._id === currentUserID);
       setFollow(isFollowing);
     }
-  }, [user]);
+  }, [user, me._id]);
 
   const handleFollow = async () => {
     setFollow(!follow);

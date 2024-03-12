@@ -19,10 +19,10 @@ const Rightbar = () => {
 
   const dispatch = useDispatch();
 
-  const handleSearchUser = (e) => {
-    e.preventDefault();
-    dispatch(getAllUsers(name));
-  };
+  // const handleSearchUser = (e) => {
+  //   e.preventDefault();
+  //   dispatch(getAllUsers(name));
+  // };
 
   useEffect(() => {
     dispatch(getAllUsers(name));

@@ -40,7 +40,7 @@ const Profile = () => {
   useEffect(() => {
     dispatch(loadUser());
     dispatch(getMyTweets());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="container-fluid border">

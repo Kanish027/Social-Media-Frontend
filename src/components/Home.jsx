@@ -9,7 +9,7 @@ import NewTweet from "./NewTweet";
 const Home = () => {
   const dispatch = useDispatch();
 
-  const { isLoading, tweet, error } = useSelector((state) => state.tweet);
+  const { tweet } = useSelector((state) => state.tweet);
 
   useEffect(() => {
     dispatch(tweets());

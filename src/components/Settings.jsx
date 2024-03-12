@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteAccount } from "../Actions/DeleteAccount";
-import { logout } from "../Actions/Logout";
 import { updatePassword } from "../Actions/UpdatePassword";
 import { loadUser } from "../Actions/User";
 

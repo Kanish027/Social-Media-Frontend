@@ -2,20 +2,19 @@ import { Avatar } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import React, { useEffect, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { addComments } from "../Actions/Comment";
+import { deleteTweet } from "../Actions/DeleteTweets";
 import { likeOrUnlike } from "../Actions/LikeUnlike";
 import { getMyTweets } from "../Actions/MyTweets";
 import { tweets } from "../Actions/Tweets";
+import { loadUser } from "../Actions/User";
+import { getUserTweets } from "../Actions/UserTweets";
 import Comments from "./Comments";
 import LikedUsers from "./LikedUsers";
 import NewCaption from "./NewCaption";
-import { deleteTweet } from "../Actions/DeleteTweets";
-import { loadUser } from "../Actions/User";
-import { getUserTweets } from "../Actions/UserTweets";
-import { useParams } from "react-router-dom";
 
 const Tweets = ({
   tweetId,
@@ -82,7 +81,7 @@ const Tweets = ({
   useEffect(() => {
     const isUserLiked = likes.some((like) => like._id === user._id);
     setLiked(isUserLiked);
-  }, [likes, user && user._id, tweetId]);
+  }, [likes, user._id, tweetId]);
 
   const handleDeleteTweet = async () => {
     await dispatch(deleteTweet(tweetId));

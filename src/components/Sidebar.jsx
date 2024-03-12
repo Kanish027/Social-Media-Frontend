@@ -75,7 +75,7 @@ const Sidebar = () => {
           paddingRight: "21px",
           scrollbarWidth: "thick",
           scrollbarColor: "transparent transparent",
-          scrollbarColor: "lightgray transparent",
+          // scrollbarColor: "lightgray transparent",
         }}
       >
         <Link to={"/"} className="logo text-dark">
