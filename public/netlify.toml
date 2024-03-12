@@ -1,6 +1,6 @@
 
 [[redirects]]
-  from = "/api/*"
+  from = "/*"
   to = "https://social-media-backend-lf06.onrender.com/:splat"
   status = 200
 
