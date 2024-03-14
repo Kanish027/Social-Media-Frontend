@@ -1,7 +1,7 @@
 
 [[redirects]]
   from = "/*"
-  to = "https://social-media-backend-lf06.onrender.com/profile"
+  to = "https://social-media-backend-lf06.onrender.com/:splat"
   status = 200
 
 [[redirects]]
