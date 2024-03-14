@@ -1,14 +1,17 @@
-import { Box } from "@mui/material";
 import React, { useState } from "react";
+import { Box } from "@mui/material";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Link } from "react-router-dom";
 
+// Define the Header component
 const Header = () => {
+  // State to control the visibility of the offcanvas menu
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
+  // Function to handle navigation item click and close the offcanvas menu
   const handleNavClick = () => {
     setShowOffcanvas(false);
   };
@@ -16,6 +19,7 @@ const Header = () => {
   return (
     <Box sx={{ display: { xs: "block", sm: "block", lg: "none" } }}>
       <div className="container-fluid ps-3 px-0 shadow-sm">
+        {/* Render Navbar for small screen sizes */}
         {["sm"].map((expand) => (
           <Navbar
             key={expand}
@@ -23,13 +27,16 @@ const Header = () => {
             className="bg-body-tertiary py-1 mb-3"
           >
             <Container fluid>
+              {/* Brand link */}
               <Link to={"/"} className="fw-bold fs-4 navbar-brand">
                 Sales App
               </Link>
+              {/* Toggle button for offcanvas menu */}
               <Navbar.Toggle
                 aria-controls={`offcanvasNavbar-expand-${expand}`}
                 onClick={() => setShowOffcanvas(!showOffcanvas)}
               />
+              {/* Offcanvas menu */}
               <Navbar.Offcanvas
                 id={`offcanvasNavbar-expand-${expand}`}
                 aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -43,6 +50,7 @@ const Header = () => {
                   </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body className="fw-semibold">
+                  {/* Navigation links */}
                   <Nav className="justify-content-end flex-grow-1 gap-1 pe-3">
                     <Link
                       to={"/"}
@@ -97,4 +105,5 @@ const Header = () => {
   );
 };
 
+// Export the Header component
 export default Header;

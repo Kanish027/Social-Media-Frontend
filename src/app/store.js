@@ -17,7 +17,11 @@ import forgotPasswordReducer from "../features/forgotPassword/forgotPasswordSlic
 import resetPasswordReducer from "../features/resetPassword/resetPasswordSlice";
 import userProfileReducer from "../features/userProfile/useProfileSlice";
 import getUserTweetsReducer from "../features/usersTweets/userTweetsSlice";
+import retweetReducer from "../features/retweet/retweetSlice";
 
+/**
+ * Redux store configuration with reducers for managing application state.
+ */
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -38,6 +42,7 @@ const store = configureStore({
     resetPassword: resetPasswordReducer,
     userProfile: userProfileReducer,
     userTweets: getUserTweetsReducer,
+    retweet: retweetReducer,
   },
 });
 

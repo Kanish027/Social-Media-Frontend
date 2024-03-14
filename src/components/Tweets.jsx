@@ -1,10 +1,9 @@
-import { Avatar } from "@mui/material";
-import { format, parseISO } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { Avatar } from "@mui/material";
 import Dropdown from "react-bootstrap/Dropdown";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { addComments } from "../Actions/Comment";
 import { deleteTweet } from "../Actions/DeleteTweets";
 import { likeOrUnlike } from "../Actions/LikeUnlike";
@@ -15,13 +14,17 @@ import { getUserTweets } from "../Actions/UserTweets";
 import Comments from "./Comments";
 import LikedUsers from "./LikedUsers";
 import NewCaption from "./NewCaption";
+import { format, parseISO } from "date-fns";
+import { retweet } from "../Actions/Retweet";
 
+// Component to display individual tweets with interactions
 const Tweets = ({
   tweetId,
   tweetedBy,
   avatar,
   tweetImage,
   username,
+  userId,
   tweetCaption,
   likes = [],
   comments = [],
@@ -29,29 +32,32 @@ const Tweets = ({
   isAccount = false,
   date,
 }) => {
+  // State variables for handling interactions and modals
   const [liked, setLiked] = useState(false);
-
   const [show, setShow] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [showCaptionUpdate, setShowCaptionUpdate] = useState(false);
 
+  // Functions to handle modal visibility
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const handleCloseComments = () => setShowComments(false);
   const handleShowComments = () => setShowComments(true);
-
   const handleCloseUpdate = () => setShowCaptionUpdate(false);
   const handleShowUpdate = () => setShowCaptionUpdate(true);
 
+  // Redux dispatcher
   const dispatch = useDispatch();
 
+  // Redux selectors
   const { user } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.comments);
 
+  // Params from React Router
   const { id } = useParams();
 
+  // Function to handle like/unlike
   const handleLike = () => {
     setLiked((prev) => !prev);
     dispatch(likeOrUnlike(tweetId));
@@ -63,13 +69,10 @@ const Tweets = ({
     }
   };
 
+  // Function to add a comment
   const handleAddComment = async (e) => {
     e.preventDefault();
-
-    // Dispatch the addComments action
     await dispatch(addComments(tweetId, commentValue));
-
-    // Fetch tweets after adding the comment
     if (!isAccount) {
       dispatch(tweets());
     }
@@ -78,11 +81,24 @@ const Tweets = ({
     setCommentValue("");
   };
 
+  // Retweet Function
+  const handleRetweet = async () => {
+    await dispatch(retweet(tweetId));
+    if (isAccount) {
+      dispatch(getMyTweets());
+    } else {
+      dispatch(getUserTweets(id));
+      dispatch(tweets());
+    }
+  };
+
+  // Effect to check if the tweet is liked by the current user
   useEffect(() => {
     const isUserLiked = likes.some((like) => like._id === user._id);
     setLiked(isUserLiked);
   }, [likes, user._id, tweetId]);
 
+  // Function to delete a tweet
   const handleDeleteTweet = async () => {
     await dispatch(deleteTweet(tweetId));
     dispatch(loadUser());
@@ -91,13 +107,16 @@ const Tweets = ({
 
   return (
     <div className="card">
+      {/* Tweet Header */}
       <div className="d-flex justify-content-between  align-items-center p-3">
         <div className="d-flex align-items-center gap-2">
           <Avatar src={avatar ? avatar.avatar_url : null}></Avatar>
           <div>
             <div className="d-flex align-items-center gap-2">
               <h6 className="mb-0">{tweetedBy}</h6>
-              <p className="text-secondary mb-0">@{username}</p>
+              <Link className="text-decoration-none" to={`/profile/${userId}`}>
+                <p className="text-secondary mb-0">@{username}</p>
+              </Link>
               <span className="text-secondary">.</span>
               <small className="text-secondary">
                 {format(parseISO(date), "MMM d")}
@@ -108,6 +127,7 @@ const Tweets = ({
             </div>
           </div>
         </div>
+        {/* Dropdown for tweet actions */}
         {isAccount && (
           <Dropdown>
             <Dropdown.Toggle variant="light" id="dropdown-basic">
@@ -130,10 +150,13 @@ const Tweets = ({
           </Dropdown>
         )}
       </div>
+      {/* Tweet Body */}
       <div className="card-body py-0">
+        {/* Display tweet image if available */}
         {tweetImage && (
           <img src={tweetImage.url} className="card-img-top rounded-5" alt="" />
         )}
+        {/* Interaction buttons */}
         <div className="d-flex justify-content-between py-2 px-4">
           <div onClick={handleShowComments}>
             <button className="btn px-1 ">
@@ -144,7 +167,7 @@ const Tweets = ({
             </button>
           </div>
           <div className="d-flex align-items-center gap-0">
-            <button className="btn px-1 ">
+            <button className="btn px-1 " onClick={() => handleRetweet()}>
               <i className="fa-solid fa-retweet text-secondary"></i>{" "}
             </button>
             <button className="btn px-1" style={{ fontSize: "14px" }}>
@@ -174,6 +197,7 @@ const Tweets = ({
           </button>
         </div>
       </div>
+      {/* Modal for displaying users who liked the tweet */}
       <>
         <Modal show={show} onHide={handleClose} centered>
           <Modal.Header>
@@ -184,6 +208,7 @@ const Tweets = ({
               return (
                 <LikedUsers
                   key={like._id}
+                  id={like._id}
                   name={like.name}
                   avatar={like.avatar && like.avatar.avatar_url}
                   username={like.username}
@@ -198,12 +223,14 @@ const Tweets = ({
           </Modal.Footer>
         </Modal>
       </>
+      {/* Modal for displaying comments */}
       <>
         <Modal show={showComments} onHide={handleCloseComments} centered>
           <Modal.Header>
             <Modal.Title>Comments</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            {/* Form to add a comment */}
             <form onSubmit={handleAddComment}>
               <div className="d-flex align-items-center gap-3">
                 <div>
@@ -233,6 +260,7 @@ const Tweets = ({
                 </button>
               </div>
             </form>
+            {/* Display comments */}
             <div>
               {comments.length > 0 ? (
                 comments.map((item) => {
@@ -265,6 +293,7 @@ const Tweets = ({
           </Modal.Footer>
         </Modal>
       </>
+      {/* Modal for updating tweet caption */}
       <>
         <Modal
           show={showCaptionUpdate}
@@ -282,6 +311,7 @@ const Tweets = ({
             </button>
           </Modal.Header>
           <Modal.Body>
+            {/* Component for updating caption */}
             <NewCaption
               tweetId={tweetId}
               handleCloseUpdate={handleCloseUpdate}

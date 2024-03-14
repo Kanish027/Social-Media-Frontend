@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
 
-const Premuim = () => {
+// Component for displaying premium content
+const Premium = () => {
   return (
-    <div>Premuim</div>
-  )
-}
+    <div>Premium</div> // Placeholder for premium content
+  );
+};
 
-export default Premuim
+export default Premium;

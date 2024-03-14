@@ -1,6 +1,5 @@
-import { Avatar } from "@mui/material";
-import { format, parseISO } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { Avatar } from "@mui/material";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -10,28 +9,34 @@ import Tweets from "./Tweets";
 import Followers from "./Followers";
 import FollowingsUser from "./FollowingsUser";
 import { followOrUnfollow } from "../Actions/FollowUnfollow";
+import { format, parseISO } from "date-fns";
 
+// Component for displaying user profile details and tweets
 const UserProfile = () => {
+  // States for controlling modals and follow state
   const [showFollowings, setShowFollowings] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [follow, setFollow] = useState(false);
 
+  // Functions to handle modal visibility
   const handleCloseFollowings = () => setShowFollowings(false);
   const handleShowFollowings = () => setShowFollowings(true);
-
   const handleCloseFollowers = () => setShowFollowers(false);
   const handleShowFollowers = () => setShowFollowers(true);
 
+  // Redux dispatcher
   const dispatch = useDispatch();
 
+  // Redux selectors
   const { user: me } = useSelector((state) => state.user);
   const { user } = useSelector((state) => state.userProfile);
   const { tweets } = useSelector((state) => state.userTweets);
 
+  // Params from React Router
   const { id } = useParams();
 
+  // Effect to check if the current user is following the displayed user
   useEffect(() => {
-    // Check if the current user is following the displayed user
     const currentUserID = user && me._id;
 
     if (user && user.followers) {
@@ -42,12 +47,14 @@ const UserProfile = () => {
     }
   }, [user, me._id]);
 
+  // Function to handle follow/unfollow
   const handleFollow = async () => {
     setFollow(!follow);
     await dispatch(followOrUnfollow(id));
     dispatch(getUserProfile(id));
   };
 
+  // Fetch user profile and tweets on component mount
   useEffect(() => {
     dispatch(getUserProfile(id));
     dispatch(getUserTweets(id));
@@ -55,6 +62,7 @@ const UserProfile = () => {
 
   return (
     <div className="container-fluid border">
+      {/* User details */}
       <div className="d-flex align-items-center">
         <div className="d-flex align-items-center gap-5 mx-2">
           <button className="btn p-0">
@@ -73,6 +81,7 @@ const UserProfile = () => {
         </div>
       </div>
 
+      {/* Profile picture and follow button */}
       <div className="d-flex justify-content-between align-items-center mx-2 pt-5 mt-5">
         <div>
           <Avatar
@@ -93,10 +102,14 @@ const UserProfile = () => {
           </button>
         </div>
       </div>
+
+      {/* User name and username */}
       <div className="mx-2 mt-3 mb-2">
         <h4 className="mb-0">{user && user.name}</h4>
         <p className="text-secondary mb-0">@{user && user.username}</p>
       </div>
+
+      {/* Additional user details */}
       {(user && user.dob) ||
       (user && user.location) ||
       (user && user.createdAt) ? (
@@ -132,6 +145,7 @@ const UserProfile = () => {
         </div>
       ) : null}
 
+      {/* Followings and Followers count */}
       <div className="mx-2 d-flex gap-4">
         <div>
           <span className="fw-semibold">{user && user.followings.length}</span>{" "}
@@ -146,6 +160,8 @@ const UserProfile = () => {
           </button>
         </div>
       </div>
+
+      {/* User tweets */}
       <div className="my-3">
         <h4 className=" justify-content-center d-flex  border-bottom py-2">
           Tweets
@@ -178,7 +194,8 @@ const UserProfile = () => {
           )}
         </div>
       </div>
-      {/* Modals */}
+
+      {/* Modals for displaying followers and followings */}
       <>
         <Modal show={showFollowers} onHide={handleCloseFollowers} centered>
           <Modal.Header>
@@ -191,9 +208,11 @@ const UserProfile = () => {
                   return (
                     <Followers
                       key={follower._id}
+                      id={follower._id}
                       name={follower.name}
                       username={follower.username}
                       avatar={follower.avatar}
+                      handleCloseFollowers={handleCloseFollowers}
                     />
                   );
                 })}
@@ -212,6 +231,7 @@ const UserProfile = () => {
           </Modal.Footer>
         </Modal>
       </>
+
       <>
         <Modal show={showFollowings} onHide={handleCloseFollowings} centered>
           <Modal.Header>
@@ -224,9 +244,11 @@ const UserProfile = () => {
                   return (
                     <FollowingsUser
                       key={following._id}
+                      id={following._id}
                       name={following.name}
                       username={following.username}
                       avatar={following.avatar}
+                      handleCloseFollowings={handleCloseFollowings}
                     />
                   );
                 })}

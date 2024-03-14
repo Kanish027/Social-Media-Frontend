@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
+// Define the Lists component
 const Lists = () => {
   return (
-    <div>Lists</div>
-  )
+    <div>Lists</div> // Render a simple div indicating 'Lists'
+  );
 }
 
-export default Lists
+// Export the Lists component
+export default Lists;

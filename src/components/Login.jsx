@@ -3,23 +3,30 @@ import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../Actions/User";
 
+// Define the Login component
 const Login = () => {
+  // Define state variables for email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Retrieve authentication state and loading state from Redux store
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
 
+  // Initialize dispatch function for Redux actions
   const dispatch = useDispatch();
 
+  // Handle login submission
   const handleLogin = async (e) => {
     e.preventDefault();
     await dispatch(login(email, password));
   };
 
+  // Redirect to home page if user is already authenticated
   if (isAuthenticated) {
     return <Navigate to="/" />;
   }
 
+  // Render login form
   return (
     <div className="container">
       <div className="row d-flex align-items-center sub-container px-1">
@@ -37,6 +44,7 @@ const Login = () => {
               Twitter
             </h3>
             <form onSubmit={handleLogin}>
+              {/* Input field for email */}
               <div className="mb-3">
                 <input
                   type="text"
@@ -46,6 +54,7 @@ const Login = () => {
                   value={email}
                 />
               </div>
+              {/* Input field for password */}
               <div className="mb-3">
                 <input
                   type="password"
@@ -55,6 +64,7 @@ const Login = () => {
                   value={password}
                 />
               </div>
+              {/* Login button */}
               <div className="d-grid mb-2">
                 <button
                   disabled={isLoading}
@@ -63,6 +73,7 @@ const Login = () => {
                   Login
                 </button>
               </div>
+              {/* Forgot password link */}
               <div>
                 <Link
                   to={"/forgot/password"}
@@ -71,11 +82,13 @@ const Login = () => {
                   Forgot Password?
                 </Link>
               </div>
+              {/* Separator */}
               <div className="m-2 d-flex align-items-center justify-content-center ">
                 <hr className="w-50" />
                 <p className="mb-0 px-2">OR</p>
                 <hr className="w-50" />
               </div>
+              {/* Sign up link */}
               <div className="text-center border rounded-1 bg-body-tertiary py-2">
                 <span className="text-dark-subtle">Don't have an account?</span>{" "}
                 <Link
@@ -93,4 +106,5 @@ const Login = () => {
   );
 };
 
+// Export the Login component
 export default Login;

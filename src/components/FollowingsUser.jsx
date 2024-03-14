@@ -1,7 +1,14 @@
 import { Avatar } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
-const FollowingsUser = ({ name, avatar, username }) => {
+const FollowingsUser = ({
+  id,
+  name,
+  avatar,
+  username,
+  handleCloseFollowings,
+}) => {
   return (
     <div className="d-flex justify-content-between my-3 align-items-center mx-3">
       <div className="d-flex gap-3 align-items-center">
@@ -12,7 +19,13 @@ const FollowingsUser = ({ name, avatar, username }) => {
         </div>
       </div>
       <div>
-        <button className="btn btn-sm btn-primary px-3 rounded-5">View</button>
+        <Link
+          to={`/profile/${id}`}
+          onClick={() => handleCloseFollowings()}
+          className="btn btn-sm btn-primary px-3 rounded-5"
+        >
+          View
+        </Link>
       </div>
     </div>
   );

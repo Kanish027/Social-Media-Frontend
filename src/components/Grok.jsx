@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
+// Define the Grok component
 const Grok = () => {
   return (
-    <div>Grok</div>
-  )
-}
+    <div>Grok</div> // Render a simple div indicating 'Grok'
+  );
+};
 
-export default Grok
+// Export the Grok component
+export default Grok;

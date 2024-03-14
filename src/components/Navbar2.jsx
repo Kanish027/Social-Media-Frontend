@@ -1,23 +1,28 @@
-import { Avatar } from "@mui/material";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Avatar } from "@mui/material";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
+// Navbar2 component for mobile view
 const Navbar2 = () => {
+  // State for controlling offcanvas visibility
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
+  // Get user information from Redux store
   const { user } = useSelector((state) => state.user);
 
+  // Function to handle offcanvas close
   const handleNavClick = () => {
     setShowOffcanvas(false);
   };
 
   return (
     <div className="container-fluid d-md-none ps-3 px-0 shadow-sm">
+      {/* Loop over responsive breakpoints */}
       {["sm"].map((expand) => (
         <Navbar
           key={expand}
@@ -25,13 +30,16 @@ const Navbar2 = () => {
           className="bg-body-tertiary py-1 mb-3"
         >
           <Container fluid>
+            {/* Render logo with link */}
             <Link to={"/"} className="fw-bold fs-4 navbar-brand">
               <i className="fa-brands fa-x-twitter fs-2 ms-2"></i>
             </Link>
+            {/* Render navbar toggle button */}
             <Navbar.Toggle
               aria-controls={`offcanvasNavbar-expand-${expand}`}
               onClick={() => setShowOffcanvas(!showOffcanvas)}
             />
+            {/* Render offcanvas menu */}
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
@@ -39,30 +47,40 @@ const Navbar2 = () => {
               show={showOffcanvas}
               onHide={() => setShowOffcanvas(false)}
             >
-              <Offcanvas.Header
-                closeButton
-                style={{ paddingTop: "1rem", paddingBottom: "0.5rem" }}
-              >
+              <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                <Avatar src={user && user.avatar && user.avatar.avatar_url}></Avatar>
+                  {/* Render user avatar */}
+                  <Avatar
+                    src={user && user.avatar && user.avatar.avatar_url}
+                  ></Avatar>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <div className="ms-3">
+                {/* Render user name and username */}
                 <h6 className="mb-0">{user && user.name}</h6>
-                <small className="text-secondary">@{user && user.username}</small>
+                <small className="text-secondary">
+                  @{user && user.username}
+                </small>
               </div>
               <div className="d-flex ms-3 gap-4 mt-2">
                 <div>
-                  <span className="fw-bold">{user && user.followings.length}</span>{" "}
+                  {/* Render number of followings */}
+                  <span className="fw-bold">
+                    {user && user.followings.length}
+                  </span>{" "}
                   <small className="text-secondary">Following</small>
                 </div>
                 <div>
-                  <span className="fw-bold">{user && user.followers.length}</span>{" "}
+                  {/* Render number of followers */}
+                  <span className="fw-bold">
+                    {user && user.followers.length}
+                  </span>{" "}
                   <small className="text-secondary">Followers</small>
                 </div>
               </div>
               <Offcanvas.Body className="fw-semibold">
                 <Nav className="justify-content-end flex-grow-1 gap-1 pe-3">
+                  {/* Render links for various pages */}
                   <Link
                     className="text-decoration-none d-flex sidebar-link my-2"
                     to={"/profile"}
@@ -75,66 +93,7 @@ const Navbar2 = () => {
                       <div className="fs-5">Profile</div>
                     </div>
                   </Link>
-                  <Link
-                    className="text-decoration-none d-flex sidebar-link my-2"
-                    to={"/premium"}
-                    onClick={handleNavClick}
-                  >
-                    <div className="d-inline-flex links text-dark align-items-center p-1 gap-4">
-                      <div>
-                        <i className="fa-brands fa-x-twitter fs-5"></i>
-                      </div>
-                      <div className="fs-5">Premium</div>
-                    </div>
-                  </Link>
-                  <Link
-                    className="text-decoration-none d-flex sidebar-link my-2"
-                    to={"/lists"}
-                    onClick={handleNavClick}
-                  >
-                    <div className="d-inline-flex links text-dark align-items-center p-1 gap-4">
-                      <div>
-                        <i className="fa-solid fa-list fs-5"></i>
-                      </div>
-                      <div className="fs-5">Lists</div>
-                    </div>
-                  </Link>
-                  <Link
-                    className="text-decoration-none d-flex sidebar-link my-2"
-                    to={"/bookmarks"}
-                    onClick={handleNavClick}
-                  >
-                    <div className="d-inline-flex links text-dark align-items-center p-1 gap-4">
-                      <div>
-                        <i className="fa-regular fa-bookmark fs-5"></i>
-                      </div>
-                      <div className="fs-5">Bookmarks</div>
-                    </div>
-                  </Link>
-                  <Link
-                    className="text-decoration-none d-flex sidebar-link my-2"
-                    to={"/communities"}
-                    onClick={handleNavClick}
-                  >
-                    <div className="d-inline-flex links text-dark align-items-center p-1 gap-4">
-                      <div>
-                        <i className="fa-solid fa-user-group fs-5"></i>
-                      </div>
-                      <div className="fs-5">Communities</div>
-                    </div>
-                  </Link>
-                  <Link
-                    className="text-decoration-none d-flex sidebar-link my-2"
-                    to={"/communities"}
-                    onClick={handleNavClick}
-                  >
-                    <div className="d-inline-flex links text-dark align-items-center p-1 gap-4">
-                      <div>
-                        <i className="fa-solid fa-user-group fs-5"></i>
-                      </div>
-                      <div className="fs-5">Monetization</div>
-                    </div>
-                  </Link>
+                  {/* Add more links as needed */}
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

@@ -8,10 +8,13 @@ import { getMyTweets } from "../Actions/MyTweets";
 import { Avatar } from "@mui/material";
 import Swal from "sweetalert2";
 
+// Define the EditProfile component
 const EditProfile = ({ handleCloseEdit }) => {
+  // Extract user data and loading status from Redux store
   const { user } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.updateProfile);
 
+  // Initialize state variables for form fields
   const [email, setEmail] = useState(user.email);
   const [name, setName] = useState(user.name);
   const [address, setAddress] = useState(user.location);
@@ -20,23 +23,26 @@ const EditProfile = ({ handleCloseEdit }) => {
     user.avatar ? user.avatar.avatar_url : null
   );
 
+  // Initialize dispatch function for Redux actions
   const dispatch = useDispatch();
 
+  // Function to handle image change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
-    const Reader = new FileReader();
+    const reader = new FileReader();
 
-    Reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
 
-    Reader.onload = () => {
-      if (Reader.readyState === 2) {
-        setAvatar(Reader.result);
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result);
       }
     };
   };
 
-  const handleRemoveimage = () => {
+  // Function to handle image removal
+  const handleRemoveImage = () => {
     setAvatar(null);
     const fileInput = document.getElementById("fileInput");
     if (fileInput) {
@@ -44,6 +50,7 @@ const EditProfile = ({ handleCloseEdit }) => {
     }
   };
 
+  // Function to handle profile update
   const handleUpdate = async (e) => {
     e.preventDefault();
     await dispatch(updateProfile(email, name, address, date, avatar));
@@ -52,12 +59,12 @@ const EditProfile = ({ handleCloseEdit }) => {
     await dispatch(getMyTweets());
     Swal.fire({
       title: "Profile Updated",
-      // text: "Have a great day!",
       icon: "success",
       confirmButtonText: "OK",
     });
   };
 
+  // Render the edit profile form
   return (
     <div className="container">
       <div className="row mt-4 mb-3 mx-3 d-flex justify-content-center">
@@ -68,7 +75,7 @@ const EditProfile = ({ handleCloseEdit }) => {
               <Avatar sx={{ width: 70, height: 70 }} src={avatar}></Avatar>
               {avatar && (
                 <button
-                  onClickCapture={handleRemoveimage}
+                  onClickCapture={handleRemoveImage}
                   className="btn btn-sm"
                 >
                   <i className="fa-solid fa-xmark"></i>
@@ -149,4 +156,5 @@ const EditProfile = ({ handleCloseEdit }) => {
   );
 };
 
+// Export the EditProfile component
 export default EditProfile;

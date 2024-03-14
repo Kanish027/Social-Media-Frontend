@@ -17,6 +17,10 @@ import {
   NewTweetSuccess,
 } from "../features/newTweet/newTweetSlice";
 
+/**
+ * Action creator for user login.
+ * Sends a POST request to authenticate user login.
+ */
 const login = (email, password) => async (dispatch) => {
   try {
     dispatch(LoginUserRequest());
@@ -33,8 +37,8 @@ const login = (email, password) => async (dispatch) => {
         withCredentials: true,
       }
     );
-    console.log(data);
     dispatch(LoginUserSuccess(data.user));
+    // Show success message using SweetAlert2
     Swal.fire({
       title: data.message,
       text: "Have a good time!",
@@ -43,6 +47,7 @@ const login = (email, password) => async (dispatch) => {
     });
   } catch (error) {
     dispatch(LoginUserFailure(error.response.data.message));
+    // Show error message using SweetAlert2
     Swal.fire({
       title: error.response.data.message,
       text: "Please enter correct password",
@@ -52,6 +57,10 @@ const login = (email, password) => async (dispatch) => {
   }
 };
 
+/**
+ * Action creator for user registration.
+ * Sends a POST request to register a new user.
+ */
 const register =
   (name, username, email, avatar, password) => async (dispatch) => {
     try {
@@ -72,8 +81,8 @@ const register =
           withCredentials: true,
         }
       );
-      console.log(data);
       dispatch(RegisterUserSuccess(data.data.savedUser));
+      // Show success message using SweetAlert2
       Swal.fire({
         title: data.message,
         text: "Thank you!",
@@ -82,6 +91,7 @@ const register =
       });
     } catch (error) {
       dispatch(RegisterUserFailure(error.response.data.message));
+      // Show error message using SweetAlert2
       Swal.fire({
         title: error.response.data.message,
         icon: "error",
@@ -90,6 +100,10 @@ const register =
     }
   };
 
+/**
+ * Action creator for loading user profile.
+ * Sends a GET request to fetch user profile data.
+ */
 const loadUser = () => async (dispatch) => {
   try {
     dispatch(LoadUserRequest());
@@ -100,10 +114,13 @@ const loadUser = () => async (dispatch) => {
   }
 };
 
+/**
+ * Action creator for creating a new tweet.
+ * Sends a POST request to create a new tweet.
+ */
 const newTweet = (caption, image) => async (dispatch) => {
   try {
     dispatch(NewTweetRequest());
-
     const { data } = await axios.post(
       "/api/v1/tweets/tweet",
       {
@@ -117,7 +134,6 @@ const newTweet = (caption, image) => async (dispatch) => {
         withCredentials: true,
       }
     );
-    console.log(data);
     dispatch(NewTweetSuccess(data.message));
   } catch (error) {
     console.error(error);
@@ -126,4 +142,3 @@ const newTweet = (caption, image) => async (dispatch) => {
 };
 
 export { loadUser, login, newTweet, register };
-

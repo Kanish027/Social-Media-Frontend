@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
+// Define the Communities component
 const Communities = () => {
   return (
-    <div>Communities</div>
-  )
-}
+    <div>Communities</div> // Render a simple div indicating communities
+  );
+};
 
-export default Communities
+// Export the Communities component
+export default Communities;

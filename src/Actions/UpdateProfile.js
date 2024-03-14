@@ -5,11 +5,20 @@ import {
   updateProfileSuccess,
 } from "../features/updateProfile/updateSlice";
 
+/**
+ * Action creator for updating user's profile information.
+ * Sends a PUT request to update the user's profile details.
+ */
 const updateProfile =
   (email, name, address, dob, avatar) => async (dispatch) => {
     try {
-      console.log(avatar)
+      // Log the avatar for debugging purposes
+      console.log(avatar);
+
+      // Dispatch action to indicate the start of the request
       dispatch(updateProfileRequest());
+
+      // Send PUT request to update the profile
       const { data } = await axios.put(
         "/api/v1/users/update/profile",
         {
@@ -25,8 +34,11 @@ const updateProfile =
           },
         }
       );
+
+      // Dispatch action upon successful profile update
       dispatch(updateProfileSuccess(data.message));
     } catch (error) {
+      // Dispatch action upon failure to update profile
       dispatch(updateProfileFailure(error.response.data.message));
     }
   };

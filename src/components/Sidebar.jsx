@@ -29,23 +29,21 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { logout } from "../Actions/Logout";
 import { loadUser } from "../Actions/User";
-import Modal from "react-bootstrap/Modal";
-import NewTweetModal from "./NewTweetModal";
 
+// Sidebar component containing navigation links and user profile information
 const Sidebar = () => {
+  // State to track the active tab
   const [tab, setTab] = useState(window.location.pathname);
 
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  // Redux selector to get user information
   const { user } = useSelector((state) => state.user);
 
+  // Redux dispatch function
   const dispatch = useDispatch();
-
+  // Navigation function for redirecting
   const navigate = useNavigate();
 
+  // Function to handle user logout
   const handleLogout = async () => {
     await dispatch(logout());
     Swal.fire({
@@ -65,6 +63,7 @@ const Sidebar = () => {
       sx={{ display: { xs: "none", sm: "block" } }}
       paddingLeft={2}
     >
+      {/* Sidebar content */}
       <Box
         sx={{
           overflowY: "auto",
@@ -75,19 +74,21 @@ const Sidebar = () => {
           paddingRight: "21px",
           scrollbarWidth: "thick",
           scrollbarColor: "transparent transparent",
-          // scrollbarColor: "lightgray transparent",
         }}
       >
+        {/* Twitter logo link */}
         <Link to={"/"} className="logo text-dark">
           <i className="fa-brands fa-x-twitter fs-2 ms-2"></i>
         </Link>
         <Box>
           <List className="">
+            {/* Navigation links */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/"}
               onClick={() => setTab("/")}
             >
+              {/* Home */}
               <div className="d-inline-flex links text-dark align-items-center p-2 pe-4 gap-4">
                 <div>
                   {tab === "/" ? (
@@ -99,6 +100,7 @@ const Sidebar = () => {
                 <div className="fs-5">Home</div>
               </div>
             </Link>
+            {/* Explore */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/explore"}
@@ -115,6 +117,7 @@ const Sidebar = () => {
                 <div className="fs-5">Explore</div>
               </div>
             </Link>
+            {/* Notifications */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/notifications"}
@@ -131,6 +134,7 @@ const Sidebar = () => {
                 <div className="fs-5">Notifications</div>
               </div>
             </Link>
+            {/* Messages */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/messages"}
@@ -147,6 +151,7 @@ const Sidebar = () => {
                 <div className="fs-5">Messages</div>
               </div>
             </Link>
+            {/* Grok */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/grok"}
@@ -163,6 +168,7 @@ const Sidebar = () => {
                 <div className="fs-5">Grok</div>
               </div>
             </Link>
+            {/* Lists */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/lists"}
@@ -179,6 +185,7 @@ const Sidebar = () => {
                 <div className="fs-5">Lists</div>
               </div>
             </Link>
+            {/* Bookmarks */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/bookmarks"}
@@ -195,6 +202,7 @@ const Sidebar = () => {
                 <div className="fs-5">Bookmarks</div>
               </div>
             </Link>
+            {/* Communities */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/communities"}
@@ -211,6 +219,7 @@ const Sidebar = () => {
                 <div className="fs-5">Communities</div>
               </div>
             </Link>
+            {/* Premium */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/premium"}
@@ -227,6 +236,7 @@ const Sidebar = () => {
                 <div className="fs-5">Premium</div>
               </div>
             </Link>
+            {/* Profile */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/profile"}
@@ -243,6 +253,7 @@ const Sidebar = () => {
                 <div className="fs-5">Profile</div>
               </div>
             </Link>
+            {/* More */}
             <Link
               className="text-decoration-none d-flex sidebar-link mb-1"
               to={"/more"}
@@ -259,12 +270,11 @@ const Sidebar = () => {
                 <div className="fs-5">More</div>
               </div>
             </Link>
-            <div
-              onClick={handleShow}
-              className="text-center border align-items-center py-3 rounded-5 bg-primary"
-            >
+            {/* Post button */}
+            <div className="text-center border align-items-center py-3 rounded-5 bg-primary">
               <span className="fw-bold text-white">Post</span>
             </div>
+            {/* User profile information */}
             <div className="d-flex justify-content-between align-items-center mt-4 gap-4">
               <div className="d-flex align-items-center gap-2">
                 <Avatar
@@ -279,6 +289,7 @@ const Sidebar = () => {
                   </Link>
                 </div>
               </div>
+              {/* Dropdown for logout */}
               <div className="">
                 <Dropdown>
                   <Dropdown.Toggle variant="light" id="dropdown-basic">
@@ -295,11 +306,6 @@ const Sidebar = () => {
           </List>
         </Box>
       </Box>
-      <>
-        <Modal show={show} onHide={handleClose}>
-          <NewTweetModal handleClose={handleClose} />
-        </Modal>
-      </>
     </Box>
   );
 };

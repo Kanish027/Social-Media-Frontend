@@ -10,20 +10,17 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link component from react-router-dom
 import { getAllUsers } from "../Actions/AllUsers";
 
+// Component for the right sidebar
 const Rightbar = () => {
-  const { allUsers } = useSelector((state) => state.allUsers);
-  const [name, setName] = useState("");
+  const { allUsers, isLoading } = useSelector((state) => state.allUsers); // Get all users from Redux state
+  const [name, setName] = useState(""); // State for filtering users by name
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // Redux dispatch function
 
-  // const handleSearchUser = (e) => {
-  //   e.preventDefault();
-  //   dispatch(getAllUsers(name));
-  // };
-
+  // Effect to fetch all users when component mounts or name state changes
   useEffect(() => {
     dispatch(getAllUsers(name));
   }, [dispatch, name]);
@@ -55,6 +52,7 @@ const Rightbar = () => {
         }}
         className="scroll-container" // Add a class for styling
       >
+        {/* Search input for filtering users */}
         <input
           type="search"
           className="form-control text-center bg-body-tertiary rounded-5"
@@ -62,62 +60,80 @@ const Rightbar = () => {
           onChange={(e) => setName(e.target.value)}
           value={name}
         />
+        {/* Title for the section */}
         <Typography mt={2}>Connect Easily</Typography>
 
+        {/* List of users */}
         <List
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         >
-          {allUsers && allUsers.length > 0 ? (
-            allUsers.map((user) => {
-              return (
-                <div key={user._id}>
-                  <ListItem
-                    sx={{
-                      justifyContent: "space-between",
-                      "& .MuiButton-root": { marginLeft: "auto" }, // Align the button to the end
-                    }}
-                  >
-                    <ListItemAvatar>
-                      {user.avatar ? (
-                        <Avatar alt="Remy Sharp" src={user.avatar.avatar_url} />
-                      ) : (
-                        <Avatar></Avatar>
-                      )}
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={user.name}
-                      secondary={
-                        <React.Fragment>
-                          <Link
-                            to={`/profile/${user._id}`}
-                            className="text-decoration-none"
-                          >
-                            <Typography
-                              sx={{ display: "inline" }}
-                              component="span"
-                              variant="body2"
-                              color="text.primary"
-                            >
-                              @{user.username}
-                            </Typography>
-                          </Link>
-                        </React.Fragment>
-                      }
-                    />
-                    <Link
-                      to={`/profile/${user._id}`}
-                      className="btn btn-primary rounded-5 btn-sm px-3"
-                    >
-                      View
-                    </Link>
-                  </ListItem>
-                  <Divider variant="inset" component="li" />
-                </div>
-              );
-            })
+          {/* Map through all users and render list items */}
+          {isLoading ? (
+            <h2 className="m-3">Loading...</h2>
           ) : (
-            <div>No Peoples to follow</div>
+            <>
+              {allUsers && allUsers.length > 0 ? (
+                allUsers.map((user) => {
+                  return (
+                    <div key={user._id}>
+                      <ListItem
+                        sx={{
+                          justifyContent: "space-between",
+                          "& .MuiButton-root": { marginLeft: "auto" }, // Align the button to the end
+                        }}
+                      >
+                        {/* User Avatar */}
+                        <ListItemAvatar>
+                          {user.avatar ? (
+                            <Avatar
+                              alt="Remy Sharp"
+                              src={user.avatar.avatar_url}
+                            />
+                          ) : (
+                            <Avatar></Avatar>
+                          )}
+                        </ListItemAvatar>
+                        {/* User details */}
+                        <ListItemText
+                          primary={user.name}
+                          secondary={
+                            <React.Fragment>
+                              {/* User username with link to profile */}
+                              <Link
+                                to={`/profile/${user && user._id}`} // Ensure correct URL for the profile page
+                                className="text-decoration-none"
+                              >
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  @{user.username}
+                                </Typography>
+                              </Link>
+                            </React.Fragment>
+                          }
+                        />
+                        {/* Button to view user profile */}
+                        <Link
+                          to={`/profile/${user && user._id}`} // Ensure correct URL for the profile page
+                          className="btn btn-primary rounded-5 btn-sm px-3"
+                        >
+                          View
+                        </Link>
+                      </ListItem>
+                      {/* Divider between list items */}
+                      <Divider variant="inset" component="li" />
+                    </div>
+                  );
+                })
+              ) : (
+                <div>No Peoples to follow</div>
+              )}
+            </>
           )}
+          {/* Placeholder list item */}
           <ListItem>
             <ListItemText
               secondary={

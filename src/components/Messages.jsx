@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
+// Define the Messages component
 const Messages = () => {
   return (
-    <div>Messages</div>
-  )
-}
+    <div>Messages</div> // Render a simple div indicating 'Messages'
+  );
+};
 
-export default Messages
+// Export the Messages component
+export default Messages;
