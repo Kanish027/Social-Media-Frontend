@@ -15,7 +15,7 @@ import { getAllUsers } from "../Actions/AllUsers";
 
 // Component for the right sidebar
 const Rightbar = () => {
-  const { allUsers, isLoading } = useSelector((state) => state.allUsers); // Get all users from Redux state
+  const { allUsers } = useSelector((state) => state.allUsers); // Get all users from Redux state
   const [name, setName] = useState(""); // State for filtering users by name
 
   const dispatch = useDispatch(); // Redux dispatch function
@@ -68,70 +68,61 @@ const Rightbar = () => {
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         >
           {/* Map through all users and render list items */}
-          {isLoading ? (
-            <h2 className="m-3">Loading...</h2>
+          {allUsers && allUsers.length > 0 ? (
+            allUsers.map((user) => {
+              return (
+                <div key={user._id}>
+                  <ListItem
+                    sx={{
+                      justifyContent: "space-between",
+                      "& .MuiButton-root": { marginLeft: "auto" }, // Align the button to the end
+                    }}
+                  >
+                    {/* User Avatar */}
+                    <ListItemAvatar>
+                      {user.avatar ? (
+                        <Avatar alt="Remy Sharp" src={user.avatar.avatar_url} />
+                      ) : (
+                        <Avatar></Avatar>
+                      )}
+                    </ListItemAvatar>
+                    {/* User details */}
+                    <ListItemText
+                      primary={user.name}
+                      secondary={
+                        <React.Fragment>
+                          {/* User username with link to profile */}
+                          <Link
+                            to={`/profile/${user && user._id}`} // Ensure correct URL for the profile page
+                            className="text-decoration-none"
+                          >
+                            <Typography
+                              sx={{ display: "inline" }}
+                              component="span"
+                              variant="body2"
+                              color="text.primary"
+                            >
+                              @{user.username}
+                            </Typography>
+                          </Link>
+                        </React.Fragment>
+                      }
+                    />
+                    {/* Button to view user profile */}
+                    <Link
+                      to={`/profile/${user && user._id}`} // Ensure correct URL for the profile page
+                      className="btn btn-primary rounded-5 btn-sm px-3"
+                    >
+                      View
+                    </Link>
+                  </ListItem>
+                  {/* Divider between list items */}
+                  <Divider variant="inset" component="li" />
+                </div>
+              );
+            })
           ) : (
-            <>
-              {allUsers && allUsers.length > 0 ? (
-                allUsers.map((user) => {
-                  return (
-                    <div key={user._id}>
-                      <ListItem
-                        sx={{
-                          justifyContent: "space-between",
-                          "& .MuiButton-root": { marginLeft: "auto" }, // Align the button to the end
-                        }}
-                      >
-                        {/* User Avatar */}
-                        <ListItemAvatar>
-                          {user.avatar ? (
-                            <Avatar
-                              alt="Remy Sharp"
-                              src={user.avatar.avatar_url}
-                            />
-                          ) : (
-                            <Avatar></Avatar>
-                          )}
-                        </ListItemAvatar>
-                        {/* User details */}
-                        <ListItemText
-                          primary={user.name}
-                          secondary={
-                            <React.Fragment>
-                              {/* User username with link to profile */}
-                              <Link
-                                to={`/profile/${user && user._id}`} // Ensure correct URL for the profile page
-                                className="text-decoration-none"
-                              >
-                                <Typography
-                                  sx={{ display: "inline" }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  @{user.username}
-                                </Typography>
-                              </Link>
-                            </React.Fragment>
-                          }
-                        />
-                        {/* Button to view user profile */}
-                        <Link
-                          to={`/profile/${user && user._id}`} // Ensure correct URL for the profile page
-                          className="btn btn-primary rounded-5 btn-sm px-3"
-                        >
-                          View
-                        </Link>
-                      </ListItem>
-                      {/* Divider between list items */}
-                      <Divider variant="inset" component="li" />
-                    </div>
-                  );
-                })
-              ) : (
-                <div>No Peoples to follow</div>
-              )}
-            </>
+            <div>No Peoples to follow</div>
           )}
           {/* Placeholder list item */}
           <ListItem>
