@@ -16,6 +16,7 @@ import Notifications from "./Notifications";
 import Premuim from "./Premuim";
 import Profile from "./Profile";
 import UserProfile from "./UserProfile";
+import Friends from "./Friends";
 
 // Define the Feed component
 const Feed = () => {
@@ -46,6 +47,7 @@ const Feed = () => {
           {/* Route for followings */}
           <Route path="/profile/:id" element={<UserProfile />} />{" "}
           {/* Route for user profiles */}
+          <Route path="/friends" element={<Friends />} />
         </Routes>
       </div>
     </Box>

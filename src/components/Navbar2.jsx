@@ -93,7 +93,20 @@ const Navbar2 = () => {
                       <div className="fs-5">Profile</div>
                     </div>
                   </Link>
-                  {/* Add more links as needed */}
+
+                  <Link
+                    className="text-decoration-none d-flex sidebar-link my-2"
+                    to={"/friends"}
+                    onClick={handleNavClick}
+                  >
+                    <div className="d-inline-flex links text-dark align-items-center p-1 gap-4">
+                      <div>
+                        <i className="fa-solid fa-user-group"></i>
+                      </div>
+                      <div className="fs-5">Find Friends</div>
+                    </div>
+                  </Link>
+                  <button className="my-2 btn btn-dark">Logout</button>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

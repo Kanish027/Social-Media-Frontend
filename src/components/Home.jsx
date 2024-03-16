@@ -12,7 +12,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   // Retrieve tweet data from Redux store
-  const { tweet, isLoading } = useSelector((state) => state.tweet);
+  const { tweet } = useSelector((state) => state.tweet);
 
   // Fetch tweets and all users when component mounts
   useEffect(() => {
@@ -30,37 +30,30 @@ const Home = () => {
       {/* Render NewTweet component */}
       <NewTweet />
       {/* Conditional rendering of tweets */}
-      {isLoading ? (
-        <h2 className="m-3">Loading...</h2>
+      {tweet && tweet.length > 0 ? (
+        tweet.map((tweets) => {
+          return (
+            // Render individual tweet component
+            <Tweets
+              key={tweets._id}
+              tweetId={tweets._id}
+              tweetImage={tweets.image}
+              tweetCaption={tweets.content}
+              userId={tweets.tweetedBy._id}
+              tweetedBy={tweets.tweetedBy.name}
+              username={tweets.tweetedBy.username}
+              avatar={tweets.tweetedBy.avatar}
+              likes={tweets.likes}
+              comments={tweets.comments}
+              retweetedBy={tweets.retweetedBy}
+              date={tweets.createdAt}
+            />
+          );
+        })
       ) : (
-        <>
-          {" "}
-          {tweet && tweet.length > 0 ? (
-            tweet.map((tweets) => {
-              return (
-                // Render individual tweet component
-                <Tweets
-                  key={tweets._id}
-                  tweetId={tweets._id}
-                  tweetImage={tweets.image}
-                  tweetCaption={tweets.content}
-                  userId={tweets.tweetedBy._id}
-                  tweetedBy={tweets.tweetedBy.name}
-                  username={tweets.tweetedBy.username}
-                  avatar={tweets.tweetedBy.avatar}
-                  likes={tweets.likes}
-                  comments={tweets.comments}
-                  retweetedBy={tweets.retweetedBy}
-                  date={tweets.createdAt}
-                />
-              );
-            })
-          ) : (
-            <div className="text-center my-5">
-              <h3 className="text-secondary">No Tweet Yet</h3>
-            </div> // Render message if no tweets available
-          )}
-        </>
+        <div className="text-center my-5">
+          <h3 className="text-secondary">No Tweet Yet</h3>
+        </div> // Render message if no tweets available
       )}
     </div>
   );

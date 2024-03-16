@@ -55,11 +55,11 @@ const Profile = () => {
               {/* User info */}
               <div>
                 <div className="mt-2">
-                  <h5 className="fw-semibold mb-0">{user.name}</h5>
+                  <h5 className="fw-semibold mb-0">{user && user.name}</h5>
                 </div>
                 <div>
                   <small className="text-secondary">
-                    {user.tweets.length} Posts
+                    {user && user.tweets.length} Posts
                   </small>
                 </div>
               </div>
@@ -79,7 +79,7 @@ const Profile = () => {
             <div>
               <Avatar
                 sx={{ width: 120, height: 120 }}
-                src={user.avatar ? user.avatar.avatar_url : null}
+                src={user && user.avatar ? user.avatar.avatar_url : null}
               ></Avatar>
             </div>
             <div>
@@ -94,15 +94,17 @@ const Profile = () => {
 
           {/* User Info */}
           <div className="mx-2 mt-3 mb-2">
-            <h4 className="mb-0">{user.name}</h4>
-            <p className="text-secondary mb-0">@{user.username}</p>
+            <h4 className="mb-0">{user && user.name}</h4>
+            <p className="text-secondary mb-0">@{user && user.username}</p>
           </div>
 
           {/* Location, DOB, and Joined */}
-          {user.dob || user.location || user.createdAt ? (
+          {(user && user.dob) ||
+          (user && user.location) ||
+          (user && user.createdAt) ? (
             <div className="mx-2 mb-2 text-secondary d-flex gap-4 align-items-center">
               {/* Location */}
-              {user.location && (
+              {user && user.location && (
                 <div className="d-flex align-items-center gap-2">
                   <small>
                     <i className="fa-solid fa-location-dot"></i>
@@ -111,7 +113,7 @@ const Profile = () => {
                 </div>
               )}
               {/* Date of Birth */}
-              {user.dob && (
+              {user && user.dob && (
                 <div className="d-flex align-items-center gap-2">
                   <small>
                     <i className="fa-solid fa-cake-candles"></i>
@@ -121,7 +123,7 @@ const Profile = () => {
               )}
               {/* Joined Date */}
               <div>
-                {user.createdAt && (
+                {user && user.createdAt && (
                   <div className="d-flex align-items-center gap-2">
                     <small>
                       <i className="fa-regular fa-calendar"></i>
@@ -139,14 +141,18 @@ const Profile = () => {
           <div className="mx-2 d-flex gap-4">
             {/* Followings */}
             <div>
-              <span className="fw-semibold">{user.followings.length}</span>{" "}
+              <span className="fw-semibold">
+                {user && user.followings.length}
+              </span>{" "}
               <button className="btn p-0" onClick={handleShowFollowings}>
                 <small className="text-secondary">Followings</small>
               </button>
             </div>
             {/* Followers */}
             <div>
-              <span className="fw-semibold">{user.followers.length}</span>{" "}
+              <span className="fw-semibold">
+                {user && user.followers.length}
+              </span>{" "}
               <button className="btn p-0" onClick={handleShowFollowers}>
                 <small className="text-secondary">Followers</small>
               </button>
@@ -198,18 +204,19 @@ const Profile = () => {
             </Modal.Header>
             <Modal.Body>
               {/* Display followings */}
-              {user.followings && user.followings.length > 0 ? (
+              {user && user.followings && user && user.followings.length > 0 ? (
                 <>
-                  {user.followings.map((following) => {
-                    return (
-                      <FollowingsUser
-                        key={following._id}
-                        avatar={following.avatar}
-                        name={following.name}
-                        username={following.username}
-                      />
-                    );
-                  })}
+                  {user &&
+                    user.followings.map((following) => {
+                      return (
+                        <FollowingsUser
+                          key={following._id}
+                          avatar={following.avatar}
+                          name={following.name}
+                          username={following.username}
+                        />
+                      );
+                    })}
                 </>
               ) : (
                 <>No Followings</>
@@ -232,18 +239,19 @@ const Profile = () => {
             </Modal.Header>
             <Modal.Body>
               {/* Display followers */}
-              {user.followers && user.followers.length > 0 ? (
+              {user && user.followers && user && user.followers.length > 0 ? (
                 <>
-                  {user.followers.map((follower) => {
-                    return (
-                      <Followers
-                        key={follower._id}
-                        avatar={follower.avatar}
-                        name={follower.name}
-                        username={follower.username}
-                      />
-                    );
-                  })}
+                  {user &&
+                    user.followers.map((follower) => {
+                      return (
+                        <Followers
+                          key={follower._id}
+                          avatar={follower.avatar}
+                          name={follower.name}
+                          username={follower.username}
+                        />
+                      );
+                    })}
                 </>
               ) : (
                 <>No Followers</>
