@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { logout } from "../Actions/Logout";
+import Swal from "sweetalert2";
+import { loadUser } from "../Actions/User";
 
 // Navbar2 component for mobile view
 const Navbar2 = () => {
@@ -15,9 +18,27 @@ const Navbar2 = () => {
   // Get user information from Redux store
   const { user } = useSelector((state) => state.user);
 
+  // Redux dispatch function
+  const dispatch = useDispatch();
+
+  // Navigation function for redirecting
+  const navigate = useNavigate();
+
   // Function to handle offcanvas close
   const handleNavClick = () => {
     setShowOffcanvas(false);
+  };
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    Swal.fire({
+      title: "Logout Successfully",
+      text: "Have a great day!",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
+    dispatch(loadUser());
+    navigate("/");
   };
 
   return (
@@ -106,7 +127,9 @@ const Navbar2 = () => {
                       <div className="fs-5">Find Friends</div>
                     </div>
                   </Link>
-                  <button className="my-2 btn btn-dark">Logout</button>
+                  <button onClick={handleLogout} className="my-2 btn btn-dark">
+                    Logout
+                  </button>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
